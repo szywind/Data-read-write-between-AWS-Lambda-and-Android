@@ -17,12 +17,24 @@ import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.StringWriter;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,13 +65,40 @@ public class MainActivity extends AppCompatActivity {
         // You can provide your own data binder by implementing
         // LambdaDataBinder.
         final MyInterface myInterface = factory.build(MyInterface.class);
-        RequestClass request = new RequestClass("John", "Doe");
+        myData data = new myData();
+        data.firstName = "Zhenyuan";
+        data.lastName  = "Shen";
+        String mStringArray[] = { "String1", "String2" };
+
+        ArrayList<String> temp = new ArrayList();
+        temp.add("s");
+        temp.add("z");
+        data.details = new Gson().toJson(temp);
+        data.aaa = new JSONArray(Arrays.asList(mStringArray));
+
+        Map m1=new HashMap();
+        m1.put("S", "foo");
+        Map m2=new HashMap();
+        m2.put("S", "bar");
+
+        List  l1 = new LinkedList();
+        l1.add(m1);
+        l1.add(m2);
+
+
+
+data.bbb = new Gson().toJson(l1);
+
+
+
+        //RequestClass request = new RequestClass("John", "Doe");
+        myData request = new myData(data);
         // The Lambda function invocation results in a network call.
         // Make sure it is not called from the main thread.
 
-        new AsyncTask<RequestClass, Void, ResponseClass>() {
+        new AsyncTask<myData, Void, ResponseClass>() {
             @Override
-            protected ResponseClass doInBackground(RequestClass... params) {
+            protected ResponseClass doInBackground(myData... params) {
                 // invoke "echo" method. In case it fails, it will throw a
                 // LambdaFunctionException.
                 try {

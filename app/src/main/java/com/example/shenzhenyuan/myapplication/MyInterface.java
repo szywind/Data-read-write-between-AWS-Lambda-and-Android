@@ -11,5 +11,5 @@ public interface MyInterface {
      */
     @LambdaFunction
     //ResponseClass abc(RequestClass request);
-    Object abc(RequestClass request);
+    Object abc(myData request);
 }
